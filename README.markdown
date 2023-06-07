@@ -1,9 +1,39 @@
-A [Giter8][g8] template for ...!
+# SMS - Scala Microservice Scaffolding
+
+A [Giter8][g8] template for a microservice app in scala!
+## How to test locally?
+
+### Prerequisites
+
+- [g8](https://www.foundweekends.org/giter8/setup.html) installed
+- [sbt](https://www.scala-sbt.org/download.html) installed
+
+
+### Run the template
+
+go to the scala-microservice-scaffold folder and run the following command:
+
+_please change the path to the path of the scala-microservice-scaffold folder on your computer_
+
+```bash
+g8 file:///home/toto/projects/scala-microservice-scaffold/ --name=target --force
+```
+
+This will create a folder named target with the generated project.
+
+### Compile it
+
+To compile it, go to the target folder and run the following command:
+
+```bash
+sbt compile
+```
+
+This will compile the project and download all the dependencies.
 
 Template license
 ----------------
-Written in <YEAR> by <AUTHOR NAME> <AUTHOR E-MAIL ADDRESS>
-[other author/contributor lines as appropriate]
+Written in 2023 by Polytech DO's students
 
 To the extent possible under law, the author(s) have dedicated all copyright and related
 and neighboring rights to this template to the public domain worldwide.
