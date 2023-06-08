@@ -1,8 +1,7 @@
 // give the user a nice default project!
-ThisBuild / organization := "com.example"
-ThisBuild / scalaVersion := "2.12.8"
+ThisBuild / organization := "$package$"
+ThisBuild / scalaVersion := "3.3.0"
 
-lazy val root = (project in file(".")).
-  settings(
-    name := "scala-microservice-scaffold"
-  )
+lazy val root = (project in file(".")).settings(
+  name := "$name$"
+)
