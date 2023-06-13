@@ -3,12 +3,14 @@ variable "kube_config_path" {
   type    = string
   default = "~/.kube/config"
 }
+$if(add_http_server.truthy)$
 
 // Ingress
 variable "ingress_host" {
   type    = string
   default = "localhost"
 }
+$endif$$if(add_sql_orm.truthy)$
 
 // Postgres
 variable "postgres_user" {
@@ -35,6 +37,7 @@ variable "postgres_volume_local_path" {
   type    = string
   default = "/mnt/postgres-data"
 }
+$endif$$if(add_message_queue.truthy)$
 
 // RabbitMQ
 variable "rabbitmq_user" {
@@ -56,6 +59,7 @@ variable "rabbitmq_volume_local_path" {
   type    = string
   default = "/mnt/rabbitmq-data"
 }
+$endif$$if(add_sql_orm.truthy||add_message_queue.truthy)$
 
 // Volumes
 variable "need_persistent_volumes" {
@@ -67,3 +71,4 @@ variable "persistent_volume_storage_class" {
   type    = string
   default = "standard"
 }
+$endif$

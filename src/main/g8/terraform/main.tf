@@ -3,6 +3,7 @@ resource "kubernetes_namespace" "app" {
     name = "$name$"
   }
 }
+$if(add_sql_orm.truthy)$
 
 // Postgres
 resource "kubernetes_persistent_volume" "postgres" {
@@ -123,6 +124,7 @@ resource "kubernetes_service" "postgres" {
     }
   }
 }
+$endif$$if(add_message_queue.truthy)$
 
 // RabbitMQ
 resource "kubernetes_persistent_volume" "rabbitmq" {
@@ -243,6 +245,8 @@ resource "kubernetes_service" "rabbitmq" {
     }
   }
 }
+$endif$
+
 
 // App
 resource "kubernetes_deployment" "app" {
@@ -271,6 +275,7 @@ resource "kubernetes_deployment" "app" {
         container {
           image = "nginx:latest"
           name  = "$name$"
+$if(add_sql_orm.truthy)$
 
           env {
             name  = "POSTGRES_PASSWORD"
@@ -292,6 +297,7 @@ resource "kubernetes_deployment" "app" {
             name  = "POSTGRES_PORT"
             value = "5432"
           }
+$endif$$if(add_message_queue.truthy)$
 
           env {
             name  = "RABBITMQ_HOST"
@@ -309,15 +315,17 @@ resource "kubernetes_deployment" "app" {
             name  = "RABBITMQ_PASSWORD"
             value = var.rabbitmq_password
           }
+$endif$$if(add_http_server.truthy)$
 
           port {
             container_port = 8080
           }
-        }
+$endif$        }
       }
     }
   }
 }
+$if(add_http_server.truthy)$
 
 resource "kubernetes_service" "app" {
   metadata {
@@ -336,7 +344,6 @@ resource "kubernetes_service" "app" {
     }
   }
 }
-
 
 // Ingress
 resource "kubernetes_ingress_v1" "app" {
@@ -369,3 +376,4 @@ resource "kubernetes_ingress_v1" "app" {
     }
   }
 }
+$endif$
