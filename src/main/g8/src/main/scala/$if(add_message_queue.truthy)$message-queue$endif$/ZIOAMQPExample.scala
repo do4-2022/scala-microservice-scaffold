@@ -9,13 +9,19 @@ import java.net.URI
 object ZIOAMQPExample extends ZIOAppDefault {
 
   val channel: ZIO[Scope, Throwable, Channel] = for {
-    connection <- Amqp.connect(URI.create("amqp://rabbitmq:rabbitmq@localhost:5672"))
+    host <- ZIO.succeed(sys.env.getOrElse("RABBITMQ_HOST", "localhost"))
+    port <- ZIO.succeed(sys.env.getOrElse("RABBITMQ_PORT", "5672").toInt)
+    user <- ZIO.succeed(sys.env.getOrElse("RABBITMQ_USER", "guest"))
+    password <- ZIO.succeed(sys.env.getOrElse("RABBITMQ_PASSWORD", "guest"))
+    uri <- ZIO.succeed(URI.create(s"amqp://\$user:\$password@\$host:\$port"))
+    connection <- Amqp.connect(uri)
     channel <- Amqp.createChannel(connection)
   } yield channel
 
   val myApp: ZIO[Any, Throwable, Unit] =
     ZIO.scoped {
       for {
+
         channel <- channel
         p <- Producer.produce(channel).fork
         c <- Consumer.listen(channel).fork
