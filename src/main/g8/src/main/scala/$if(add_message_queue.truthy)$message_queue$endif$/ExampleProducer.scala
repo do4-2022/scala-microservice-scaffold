@@ -6,7 +6,7 @@ import zio.*
 
 import java.net.URI
 
-object Producer{
+object ExampleProducer{
 
   def produce(channel: Channel): ZIO[Any, Throwable, Unit] =
     ZIO.scoped {

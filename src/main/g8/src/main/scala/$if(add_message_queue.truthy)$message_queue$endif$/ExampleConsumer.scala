@@ -6,7 +6,7 @@ import zio.*
 
 import java.net.URI
 
-object Consumer {
+object ExampleConsumer {
 
   def listen(channel: Channel): ZIO[Any, Throwable, Unit] =
     ZIO.scoped {
