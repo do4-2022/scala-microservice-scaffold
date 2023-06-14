@@ -23,8 +23,8 @@ object ZIOAMQPExample extends ZIOAppDefault {
       for {
 
         channel <- channel
-        p <- Producer.produce(channel).fork
-        c <- Consumer.listen(channel).fork
+        p <- ExampleProducer.produce(channel).fork
+        c <- ExampleConsumer.listen(channel).fork
         _ <- p.zip(c).join
       } yield ()
     }
