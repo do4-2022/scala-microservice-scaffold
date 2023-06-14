@@ -18,13 +18,12 @@ object ZIOAMQPExample extends ZIOAppDefault {
     channel <- Amqp.createChannel(connection)
   } yield channel
 
-  val myApp: ZIO[Any, Throwable, Unit] =
+  private val myApp: ZIO[Any, Throwable, Unit] =
     ZIO.scoped {
       for {
-
         channel <- channel
         p <- ExampleProducer.produce(channel).fork
-        c <- ExampleConsumer.listen(channel).fork
+        c <- ExampleListener.listen(channel).fork
         _ <- p.zip(c).join
       } yield ()
     }
