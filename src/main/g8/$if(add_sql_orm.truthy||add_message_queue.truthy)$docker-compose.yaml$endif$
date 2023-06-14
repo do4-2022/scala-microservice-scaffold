@@ -10,7 +10,7 @@ $if(add_sql_orm.truthy)$  postgres:
     ports:
       - 5432:5432
     volumes:
-      - postgres
+      - postgres:/var/lib/postgresql/data
 $endif$
 $if(add_message_queue.truthy)$  rabbitmq:
     image: rabbitmq:3.12.0-management-alpine
@@ -21,10 +21,12 @@ $if(add_message_queue.truthy)$  rabbitmq:
       RABBITMQ_DEFAULT_USER: rabbitmq
       RABBITMQ_DEFAULT_PASS: rabbitmq
     volumes:
-      - rabbitmq
+      - rabbitmq:/var/lib/rabbitmq
 $endif$
 
 volumes:
-$if(add_sql_orm.truthy)$  postgres:
-$endif$$if(add_message_queue.truthy)$  rabbitmq:
+$if(add_sql_orm.truthy)$
+  postgres:
+$endif$$if(add_message_queue.truthy)$
+  rabbitmq:
 $endif$
