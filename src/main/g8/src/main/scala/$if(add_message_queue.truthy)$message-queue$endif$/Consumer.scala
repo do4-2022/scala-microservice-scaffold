@@ -6,14 +6,14 @@ import zio.*
 
 import java.net.URI
 
-object Consumer extends ZIOAppDefault {
+object Consumer {
 
   val channel: ZIO[Scope, Throwable, Channel] = for {
     connection <- Amqp.connect(URI.create("amqp://rabbitmq:rabbitmq@localhost:5672"))
     channel <- Amqp.createChannel(connection)
   } yield channel
 
-  val myApp: ZIO[Any, Throwable, Unit] =
+  def listen: ZIO[Any, Throwable, Unit] =
     ZIO.scoped {
       for {
         channel <- channel
@@ -35,6 +35,4 @@ object Consumer extends ZIOAppDefault {
       } yield ()
     }
 
-  override def run: ZIO[Any, Throwable, Unit] =
-    myApp
 }
