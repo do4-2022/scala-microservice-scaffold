@@ -8,15 +8,10 @@ import java.net.URI
 
 object Consumer {
 
-  val channel: ZIO[Scope, Throwable, Channel] = for {
-    connection <- Amqp.connect(URI.create("amqp://rabbitmq:rabbitmq@localhost:5672"))
-    channel <- Amqp.createChannel(connection)
-  } yield channel
-
-  def listen: ZIO[Any, Throwable, Unit] =
+  def listen(channel: Channel): ZIO[Any, Throwable, Unit] =
     ZIO.scoped {
       for {
-        channel <- channel
+        channel <- ZIO.succeed(channel)
         consumer: ZIO[Any, Throwable, Unit] =
           channel
             .consume(

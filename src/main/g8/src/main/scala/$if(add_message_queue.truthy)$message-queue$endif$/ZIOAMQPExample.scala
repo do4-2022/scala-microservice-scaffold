@@ -17,8 +17,8 @@ object ZIOAMQPExample extends ZIOAppDefault {
     ZIO.scoped {
       for {
         channel <- channel
-        p <- Producer.produce.fork
-        c <- Consumer.listen.fork
+        p <- Producer.produce(channel).fork
+        c <- Consumer.listen(channel).fork
         _ <- p.zip(c).join
       } yield ()
     }

@@ -6,19 +6,12 @@ import zio.*
 
 import java.net.URI
 
-object Producer {
+object Producer{
 
-  val channel: ZIO[Scope, Throwable, Channel] = for {
-    connection <- Amqp.connect(
-      URI.create("amqp://rabbitmq:rabbitmq@localhost:5672")
-    )
-    channel <- Amqp.createChannel(connection)
-  } yield channel
-
-  def produce: ZIO[Any, Throwable, Unit] =
+  def produce(channel: Channel): ZIO[Any, Throwable, Unit] =
     ZIO.scoped {
       for {
-        channel <- channel
+        channel <- ZIO.succeed(channel)
         producer: ZIO[Any, Throwable, Long] =
           Random.nextUUID
             .flatMap(uuid =>
