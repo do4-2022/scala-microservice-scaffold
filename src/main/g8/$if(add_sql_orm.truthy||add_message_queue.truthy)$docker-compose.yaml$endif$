@@ -20,7 +20,6 @@ $if(add_message_queue.truthy)$  rabbitmq:
     environment:
       RABBITMQ_DEFAULT_USER: rabbitmq
       RABBITMQ_DEFAULT_PASS: rabbitmq
-      RABBITMQ_DEFAULT_VHOST: rabbitmq
     volumes:
       - rabbitmq
 $endif$
