@@ -1,0 +1,37 @@
+# Dev environment
+
+This template provides basic configuration to quickly start developing.
+
+## Requirements
+
+To take full advantage of this template, you will need to install the following tools:
+
+- **Docker**: https://www.docker.com/
+- **SBT**: https://www.scala-sbt.org/
+
+## Start the development environment
+
+Before developing, you just have to start the dependencies (databases, message queue, etc.) with Docker Compose.
+
+```bash
+cd /path/to/microservice
+docker compose up -d
+```
+
+## Run the microservice
+
+Use SBT CLI to fetch libraries and run the microservice.
+
+```bash
+cd /path/to/microservice
+sbt run
+```
+
+## Stop the development environment
+
+Once you finished your work, just stop the dependencies.
+
+```bash
+cd /path/to/microservice
+docker compose down
+```
