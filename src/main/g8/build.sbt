@@ -14,3 +14,8 @@ lazy val root = (project in file(".")).settings(
 $if(add_message_queue.truthy)$
 libraryDependencies += "nl.vroste" %% "zio-amqp" % "0.4.0"
 $endif$
+
+libraryDependencies ++= Seq(
+  "io.getquill"          %% "quill-jdbc-zio" % "4.6.0.1",
+  "org.postgresql"       %  "postgresql"     % "42.5.4"
+)
