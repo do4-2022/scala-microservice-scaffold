@@ -1,6 +1,8 @@
 # SMS - Scala Microservice Scaffolding
 
 A [Giter8][g8] template for a microservice app in scala!
+You can find documentation here: https://scala-microservice-scaffold.vercel.app/
+
 ## How to test locally?
 
 ### Prerequisites
