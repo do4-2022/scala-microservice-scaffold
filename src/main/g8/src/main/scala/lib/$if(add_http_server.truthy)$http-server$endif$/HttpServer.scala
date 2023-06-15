@@ -7,16 +7,11 @@ object HttpServer {
 
   private val healthCheck: Http[Any, Nothing, Request, Response] =
     Http.collect[Request] { case Method.GET -> Root / "health" =>
-      Response.text("OK")
-    }
-
-  private val app: App[Any] =
-    Http.collect[Request] { case Method.GET -> Root / "hello" =>
-      Response.text("Hello World!")
+      Response.json("{\"status\": \"ok\"}")
     }
 
   val run = for {
     _ <- printLine(s"Server is running on port \$PORT")
-    _ <- Server.serve(healthCheck ++ app).provide(Server.default)
+    _ <- Server.serve(healthCheck ++ User.routes).provide(Server.default)
   } yield ()
 }
