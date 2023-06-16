@@ -1,6 +1,6 @@
-package lib.sql_orm.services
+package sql_orm.services
 
-import lib.sql_orm.domain.ExampleEntity
+import sql_orm.domain.ExampleEntity
 
 import io.getquill.jdbczio.Quill
 import io.getquill._

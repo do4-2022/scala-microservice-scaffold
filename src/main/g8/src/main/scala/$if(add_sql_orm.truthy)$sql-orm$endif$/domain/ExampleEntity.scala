@@ -1,3 +1,3 @@
-package lib.sql_orm.domain
+package sql_orm.domain
 
 final case class ExampleEntity(id: String, value: Int)

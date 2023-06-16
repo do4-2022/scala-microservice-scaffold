@@ -8,8 +8,8 @@ import java.net.URI
 $endif$
 
 $if(add_sql_orm.truthy)$
-import lib.sql_orm.services.ExampleService
-import lib.sql_orm.domain.ExampleEntity
+import sql_orm.services.ExampleService
+import sql_orm.domain.ExampleEntity
 import io.getquill.SnakeCase
 import io.getquill.jdbczio.Quill
 import io.getquill.*
