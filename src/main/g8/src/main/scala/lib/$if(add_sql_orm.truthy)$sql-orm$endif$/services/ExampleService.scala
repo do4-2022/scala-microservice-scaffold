@@ -1,6 +1,6 @@
 package lib.sql_orm.services
 
-import lib.sql_orm.domain.Example
+import lib.sql_orm.domain.ExampleEntity
 
 import io.getquill.jdbczio.Quill
 import io.getquill._
@@ -10,20 +10,20 @@ import java.sql.SQLException
 class ExampleService(quill: Quill.Postgres[SnakeCase]) {
   import quill._
 
-  def getById(id: String): ZIO[Any, SQLException, Option[Example]] = {
+  def getById(id: String): ZIO[Any, SQLException, Option[ExampleEntity]] = {
     run(quote {
-      query[Example].filter(_.id == lift(id))
+      query[ExampleEntity].filter(_.id == lift(id))
     }).map(_.headOption)
   }
 
   def getMany(
-    where: Quoted[Example => Boolean],
-    sortBy: Quoted[Example => Boolean],
+    where: Quoted[ExampleEntity => Boolean],
+    sortBy: Quoted[ExampleEntity => Boolean],
     offset: Int,
     limit: Int
-  ): ZIO[Any, SQLException, List[Example]] = {
+  ): ZIO[Any, SQLException, List[ExampleEntity]] = {
     run(quote {
-      query[Example]
+      query[ExampleEntity]
         .filter(where(_))
         .sortBy(sortBy(_))
         .drop(lift(offset))
@@ -34,50 +34,50 @@ class ExampleService(quill: Quill.Postgres[SnakeCase]) {
   def insertOne(
     id: String,
     value: Int
-  ): ZIO[Any, SQLException, Example] = {
+  ): ZIO[Any, SQLException, ExampleEntity] = {
     run(quote {
-      query[Example].insertValue(lift(Example(id, value))).returning(_.id)
-    }).map(id => Example(id, value))
+      query[ExampleEntity].insertValue(lift(ExampleEntity(id, value))).returning(_.id)
+    }).map(id => ExampleEntity(id, value))
   }
 
   def updateById(
     id: String,
     value: Int
-  ): ZIO[Any, SQLException, Option[Example]] = {
+  ): ZIO[Any, SQLException, Option[ExampleEntity]] = {
     run(quote {
-      query[Example]
+      query[ExampleEntity]
         .filter(_.id == lift(id))
         .update(_.value -> lift(value))
-    }).map(e => if (e == 1) Some(Example(id, value)) else None)
+    }).map(e => if (e == 1) Some(ExampleEntity(id, value)) else None)
   }
 
   def updateMany(
-    where: Quoted[Example => Boolean],
+    where: Quoted[ExampleEntity => Boolean],
     value: Int
-  ): ZIO[Any, SQLException, List[Example]] = {
+  ): ZIO[Any, SQLException, List[ExampleEntity]] = {
     run(quote {
-      query[Example]
+      query[ExampleEntity]
         .filter(where(_))
         .update(_.value -> lift(value))
         .returningMany(r => (r.id, r.value))
-    }).map(_.map((i, v) => Example(i, v)))
+    }).map(_.map((i, v) => ExampleEntity(i, v)))
   }
 
-  def deleteById(id: String): ZIO[Any, SQLException, Option[Example]] = {
+  def deleteById(id: String): ZIO[Any, SQLException, Option[ExampleEntity]] = {
     run(quote {
-      query[Example]
+      query[ExampleEntity]
         .filter(_.id == lift(id))
         .delete
-    }).map(e => if (e == 1) Some(Example(id, 0)) else None)
+    }).map(e => if (e == 1) Some(ExampleEntity(id, 0)) else None)
   }
 
-  def deleteMany(where: Quoted[Example => Boolean]): ZIO[Any, SQLException, List[Example]] = {
+  def deleteMany(where: Quoted[ExampleEntity => Boolean]): ZIO[Any, SQLException, List[ExampleEntity]] = {
     run(quote {
-      query[Example]
+      query[ExampleEntity]
         .filter(where(_))
         .delete
         .returningMany(r => (r.id, r.value))
-    }).map(_.map((i, v) => Example(i, v)))
+    }).map(_.map((i, v) => ExampleEntity(i, v)))
   }
 }
 

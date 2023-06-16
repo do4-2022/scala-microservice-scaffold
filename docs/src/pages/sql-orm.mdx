@@ -1,1 +1,69 @@
 # Using the SQL ORM
+
+This template uses [ZIO Quill](https://zio.dev/zio-quill/), an ORM that uses a Quoted Domain Specific Language (QDSL) to generate SQL queries from your functional code.
+
+The necessary steps are already done if you have set ``add_sql_orm`` to true, but we still will go over them, so you can understand.
+
+First define your model
+```scala
+final case class ExampleEntity(id: String, value: Int)
+```
+
+You can now inject quill into a service that will need it ...
+```scala
+//                    👇 Inject quill with the Postgres dialect and the snake case naming strategy
+class ExampleService(quill: Quill.Postgres[SnakeCase]) {
+  import quill._ // 👈 Import the quill context, it allows your controller to execute the run function
+
+  def getById(id: String): ZIO[Any, SQLException, Option[ExampleEntity]] = {
+    run(quote {
+      query[ExampleEntity].filter(_.id == lift(id))
+    }).map(_.headOption)
+  }
+ //...
+}
+```
+
+We are not quite done yet, as our configuration is not set yet. Add the following to your ```src/main/resources/application.conf``` file
+```hocon
+# 👇 keep this prefix name for later
+db.default {
+  dataSourceClassName = org.postgresql.ds.PGSimpleDataSource
+  dataSource.user = <username>
+  dataSource.password = <password>
+  dataSource.databaseName = <dbname>
+  dataSource.portNumber = <port>
+  dataSource.serverName = <host>
+  connectionTimeout = 30000
+}
+```
+
+We now add a ZLayer to our ```ExampleService``` so the provided quill context will be available to our controller
+```scala
+object ExampleService {
+  val live = ZLayer.fromFunction(new ExampleService(_))
+}
+```
+
+You can finally provide the configuration to our service, here we do it in main
+```scala
+object Main extends ZIOAppDefault {
+
+  override def run =
+    for {
+
+      _ <- ZIO.serviceWithZIO[ExampleService](
+        _.insertOne(randomUUID.toString, 1)
+      ).provide(
+        ExampleService.live, // 👈 Provide the service so it can be constructed with the quill context
+        Quill.Postgres.fromNamingStrategy(SnakeCase),
+        Quill.DataSource.fromPrefix("db.default") // 👈 Provide the configuration
+      ).debug(
+        "Result: "
+      )
+
+    } yield 0
+}
+```
+
+And now you are good to go! 🚀
