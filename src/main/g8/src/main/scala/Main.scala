@@ -7,6 +7,15 @@ import message_queue.*
 import java.net.URI
 $endif$
 
+$if(add_sql_orm.truthy)$
+import lib.sql_orm.services.ExampleService
+import lib.sql_orm.domain.Example
+import io.getquill.SnakeCase
+import io.getquill.jdbczio.Quill
+import io.getquill.*
+import java.util.UUID.randomUUID
+$endif$
+
 object Main extends ZIOAppDefault {
 
   $if(add_message_queue.truthy)$
@@ -25,6 +34,28 @@ object Main extends ZIOAppDefault {
 
   override def run =
     for {
+
+      $if(add_sql_orm.truthy)$
+      _ <- ZIO.serviceWithZIO[ExampleService](es =>
+        (
+          es.insertOne(randomUUID.toString, 1) <*>
+            es.insertOne(randomUUID.toString, 2) <*>
+            es.insertOne(randomUUID.toString, 3)
+          )
+          *> es.updateMany(quote {
+          _.value <= 2
+        }, 4)
+          *> es.deleteMany(quote {
+          _ => true
+        })
+      )
+        .provide(
+          ExampleService.live,
+          Quill.Postgres.fromNamingStrategy(SnakeCase),
+          Quill.DataSource.fromPrefix("db.default")
+        )
+        .debug("Result: ")
+      $endif$
 
       $if(add_http_server.truthy) $
       h <- HttpServer.run.fork
