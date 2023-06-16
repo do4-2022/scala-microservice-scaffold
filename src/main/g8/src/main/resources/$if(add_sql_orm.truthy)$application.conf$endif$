@@ -1,4 +1,4 @@
-$if(add_sql_orm.truthy)$db.default {
+db.default {
   dataSourceClassName = org.postgresql.ds.PGSimpleDataSource
   dataSource.user = postgres
   dataSource.password = postgres
@@ -6,4 +6,4 @@ $if(add_sql_orm.truthy)$db.default {
   dataSource.portNumber = 5432
   dataSource.serverName = localhost
   connectionTimeout = 30000
-}$endif$
+}
