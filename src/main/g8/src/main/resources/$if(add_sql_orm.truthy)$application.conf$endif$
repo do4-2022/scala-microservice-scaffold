@@ -1,9 +1,22 @@
-db.default {
+db.default = {
   dataSourceClassName = org.postgresql.ds.PGSimpleDataSource
-  dataSource.user = postgres
-  dataSource.password = postgres
-  dataSource.databaseName = postgres
-  dataSource.portNumber = 5432
-  dataSource.serverName = localhost
+  dataSource = {
+    # since any substitution with '?' is ignored if the value is not defined, we set the default value first
+    user = postgres
+    user = \${?POSTGRES_USER}
+
+    password = postgres
+    password = \${?POSTGRES_PASSWORD}
+
+    databaseName = postgres
+    databaseName = \${?POSTGRES_NAME}
+
+    portNumber = 5432
+    portNumber =  \${?POSTGRES_PORT}
+
+    serverName = localhost
+    serverName = \${?POSTGRES_HOST}
+  }
+
   connectionTimeout = 30000
 }

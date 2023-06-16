@@ -2,14 +2,46 @@
 
 This template uses [ZIO Quill](https://zio.dev/zio-quill/), an ORM that uses a Quoted Domain Specific Language (QDSL) to generate SQL queries from your functional code.
 
-The necessary steps are already done if you have set ``add_sql_orm`` to true, but we still will go over them, so you can understand.
+The necessary steps are already done if you have set `add_sql_orm` to true, but we still will go over them, so you can understand.
+
+## Setup
+
+### Create db
+
+You need to start a postgres database with the correct schema (the one you want)
+if you want to use our example you need to create a `example_entity` table with the following schema:
+
+```sql
+CREATE TABLE example_entity (
+    id VARCHAR(255) NOT NULL,
+    value INT NOT NULL,
+    PRIMARY KEY (id)
+);
+```
+
+### Environment variables
+
+You will also need to configure the connection to your database,
+you can do this by setting the following environment variables:
+
+```bash
+export POSTGRES_USER=<username>
+export POSTGRES_PASSWORD=<password>
+export POSTGRES_HOST=<host>
+export POSTGRES_PORT=<port>
+export POSTGRES_NAME=<db_name>
+```
+
+## Code
 
 First define your model
+
 ```scala
 final case class ExampleEntity(id: String, value: Int)
 ```
 
 You can now inject quill into a service that will need it ...
+
 ```scala
 //                    👇 Inject quill with the Postgres dialect and the snake case naming strategy
 class ExampleService(quill: Quill.Postgres[SnakeCase]) {
@@ -24,21 +56,8 @@ class ExampleService(quill: Quill.Postgres[SnakeCase]) {
 }
 ```
 
-We are not quite done yet, as our configuration is not set yet. Add the following to your ```src/main/resources/application.conf``` file
-```hocon
-# 👇 keep this prefix name for later
-db.default {
-  dataSourceClassName = org.postgresql.ds.PGSimpleDataSource
-  dataSource.user = <username>
-  dataSource.password = <password>
-  dataSource.databaseName = <dbname>
-  dataSource.portNumber = <port>
-  dataSource.serverName = <host>
-  connectionTimeout = 30000
-}
-```
+We now add a ZLayer to our `ExampleService` so the provided quill context will be available to our controller
 
-We now add a ZLayer to our ```ExampleService``` so the provided quill context will be available to our controller
 ```scala
 object ExampleService {
   val live = ZLayer.fromFunction(new ExampleService(_))
@@ -46,6 +65,7 @@ object ExampleService {
 ```
 
 You can finally provide the configuration to our service, here we do it in main
+
 ```scala
 object Main extends ZIOAppDefault {
 
