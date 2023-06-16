@@ -19,7 +19,7 @@ $endif$
 
 $if(add_sql_orm.truthy)$
 libraryDependencies ++= Seq(
-    "io.getquill"          %% "quill-jdbc-zio" % "4.6.0.1",
+    ("io.getquill"          %% "quill-jdbc-zio" % "4.6.0.1").exclude("com.lihaoyi", "geny_2.13"),
     "org.postgresql"       %  "postgresql"     % "42.5.4"
 )
 $endif$
