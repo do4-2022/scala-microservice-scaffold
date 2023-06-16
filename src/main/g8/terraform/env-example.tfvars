@@ -1,5 +1,6 @@
 kube_config_path                = "~/.kube/config"
 $if(add_http_server.truthy)$ingress_host                    = "localhost"
+http_server_port                = "8080"
 $endif$$if(add_sql_orm.truthy)$postgres_user                   = "postgres"
 postgres_password               = "postgres"
 postgres_database               = "postgres"

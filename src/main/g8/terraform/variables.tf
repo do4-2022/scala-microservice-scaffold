@@ -10,6 +10,11 @@ variable "ingress_host" {
   type    = string
   default = "localhost"
 }
+
+variable "http_server_port" {
+  type    = string
+  default = "8080"
+}
 $endif$$if(add_sql_orm.truthy)$
 
 // Postgres

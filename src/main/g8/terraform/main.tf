@@ -317,8 +317,13 @@ $endif$$if(add_message_queue.truthy)$
           }
 $endif$$if(add_http_server.truthy)$
 
+          env {
+            name  = "HTTP_SERVER_PORT"
+            value = var.http_server_port
+          }
+
           port {
-            container_port = 8080
+            container_port = var.http_server_port
           }
 $endif$        }
       }
