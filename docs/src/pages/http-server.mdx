@@ -1,1 +1,92 @@
 # Using the HTTP Server
+
+The HTTP server provides some basic routes. You can use them as is or extend them to fit your needs.
+
+## Set up
+
+To run the HTTP server, only environment variables are needed. You can set them up in your terminal as follows:
+
+```bash
+export HTTP_SERVER_PORT=8080;
+export JWT_SECRET=secretKey;
+```
+
+> Note : The default values are the ones used in the example above. You can run the server without setting any environment variables.
+
+## API routes
+
+`GET /health`
+
+Check if the service is up and running.
+
+Response:
+
+```json
+{
+  "status": "ok"
+}
+```
+
+`POST /register`
+
+Register a new user.
+
+Request body:
+
+```json
+{
+  "username": "username",
+  "password": "password"
+}
+```
+
+Response:
+
+```json
+{
+  "username": "username",
+  "password": "password"
+}
+```
+
+`POST /login`
+
+Login with a user.
+
+Request body:
+
+```json
+{
+  "username": "username",
+  "password": "password"
+}
+```
+
+Response:
+
+```json
+{
+  "token": "token"
+}
+```
+
+`GET /user/:username`
+
+Get a user. This route is protected by JWT authentication.
+
+Request header:
+
+```json
+{
+  "Authorization": "Bearer <auth_token>"
+}
+```
+
+Response:
+
+```json
+{
+  "username": "username",
+  "password": "password"
+}
+```
