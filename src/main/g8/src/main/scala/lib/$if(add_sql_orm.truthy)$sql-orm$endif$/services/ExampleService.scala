@@ -1,10 +1,10 @@
-package lib.sql_orm.tables
+package lib.sql_orm.services
 
 import lib.sql_orm.domain.Example
 
 import io.getquill.jdbczio.Quill
 import io.getquill._
-import zio.ZIO
+import zio._
 import java.sql.SQLException
 
 class ExampleService(quill: Quill.Postgres[SnakeCase]) {
@@ -79,4 +79,8 @@ class ExampleService(quill: Quill.Postgres[SnakeCase]) {
         .returningMany(r => (r.id, r.value))
     }).map(_.map((i, v) => Example(i, v)))
   }
+}
+
+object ExampleService {
+  val live = ZLayer.fromFunction(new ExampleService(_))
 }
