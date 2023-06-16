@@ -62,6 +62,10 @@ $if(add_http_server.truthy)$
 **HTTP_SERVER_PORT**
 
 The http server port. Default is _8080_.
+
+**JWT_SECRET**
+
+The jwt secret to encode authentication tokens. Default is _secretKey_.
 $endif$$if(add_sql_orm.truthy)$
 
 **POSTGRES_USER**
@@ -101,3 +105,85 @@ The RabbitMQ default username. Default is _rabbitmq_.
 
 The RabbitMQ default password. Default is _rabbitmq_.
 $endif$$endif$
+
+$if(add_http_server.truthy)$
+
+## HTTP API
+
+`GET /health`
+
+Check if the service is up and running.
+
+Response:
+
+```json
+{
+  "status": "ok"
+}
+```
+
+`POST /register`
+
+Register a new user.
+
+Request body:
+
+```json
+{
+  "username": "username",
+  "password": "password"
+}
+```
+
+Response:
+
+```json
+{
+  "username": "username",
+  "password": "password"
+}
+```
+
+`POST /login`
+
+Login with a user.
+
+Request body:
+
+```json
+{
+  "username": "username",
+  "password": "password"
+}
+```
+
+Response:
+
+```json
+{
+  "token": "token"
+}
+```
+
+`GET /user/:username`
+
+Get a user. This route is protected by JWT authentication.
+
+Request header:
+
+```json
+{
+  "Authorization": "Bearer <auth_token>"
+}
+```
+
+Response:
+
+```json
+{
+  "username": "username",
+  "password": "password"
+}
+```
+
+$endif$
