@@ -82,7 +82,7 @@ The PostgreSQL database to connect to. Default is _postgres_.
 
 **POSTGRES_HOST**
 
-The PostgreSQL hostname. No default value.
+The PostgreSQL hostname. Default is _localhost_.
 
 **POSTGRES_PORT**
 
