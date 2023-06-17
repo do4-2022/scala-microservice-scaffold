@@ -25,16 +25,18 @@ You will also need to configure the connection to your database,
 you can do this by setting the following environment variables:
 
 ```bash
-export POSTGRES_USER=<username>
-export POSTGRES_PASSWORD=<password>
-export POSTGRES_HOST=<host>
-export POSTGRES_PORT=<port>
-export POSTGRES_NAME=<db_name>
+export POSTGRES_USER=postgres;
+export POSTGRES_PASSWORD=postgres;
+export POSTGRES_HOST=localhost;
+export POSTGRES_PORT=5432;
+export POSTGRES_NAME=postgres;
 ```
+
+> Note : The default values are the ones used in the example above. You can run the server without setting any environment variables.
 
 ## Code
 
-First define your model
+First define your model:
 
 ```scala
 final case class ExampleEntity(id: String, value: Int)
@@ -56,7 +58,7 @@ class ExampleService(quill: Quill.Postgres[SnakeCase]) {
 }
 ```
 
-We now add a ZLayer to our `ExampleService` so the provided quill context will be available to our controller
+We now add a ZLayer to our `ExampleService` so the provided quill context will be available to our controller:
 
 ```scala
 object ExampleService {
@@ -64,7 +66,7 @@ object ExampleService {
 }
 ```
 
-You can finally provide the configuration to our service, here we do it in main
+You can finally provide the configuration to our service, here we do it in main:
 
 ```scala
 object Main extends ZIOAppDefault {

@@ -4,7 +4,7 @@
 
 > These steps require [Docker](https://www.docker.com/) to be installed on your computer.
 
-First you need to build a Docker image of your microservice.
+First you need to build a Docker image of your microservice:
 
 ```bash
 cd /path/to/microservice
@@ -19,7 +19,7 @@ Don't forget to replace `dockerusername`, `yourmicroservice` and `version` by yo
 
 Once you have a Docker image of your microservice, you can use Terraform to deploy it with all its dependencies (databases, message queue, etc.).
 
-1. Copy `terraform/env-example.tfvars` to `terraform/env.tfvars`.
+1. Copy `terraform/env-example.tfvars` to `terraform/env.tfvars`:
 
 ```bash
 cd /path/to/microservice/terraform
@@ -28,7 +28,7 @@ cp env-example.tfvars env.tfvars
 
 2. Change deployment variables in `terraform/env.tfvars` as you need (don't forget to change **app_docker_image**).
 
-3. Deploy your microservice.
+3. Deploy your microservice:
 
 ```bash
 terraform init

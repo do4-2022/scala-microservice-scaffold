@@ -8,9 +8,9 @@ The default message queue is RabbitMQ, but with a bit of work you can use any me
 
 You need to set up the message queue before using it. For that connect to the message queue host on port 15672 (default port) and do the following steps:
 
-- In the queue part create a new queue (in the examples we will call it `my_queue`)
-- In the exchange part create a new exchange (in the examples we will call it `my_exchange`)
-- In the exchange part create a new binding between the queue and the exchange (in the examples we will bind `my_queue` to `my_exchange`)
+- In the queue part create a new queue (in the examples we will call it `my_queue`).
+- In the exchange part create a new exchange (in the examples we will call it `my_exchange`).
+- In the exchange part create a new binding between the queue and the exchange (in the examples we will bind `my_queue` to `my_exchange`).
 
 ### Environment variables
 
@@ -85,5 +85,5 @@ The callback is a function that will be called every time a message is received 
 
 It takes two parameters:
 
-- The record that was received, which contains the message body and some metadata
-- The channel, which is used to acknowledge the message
+- The record that was received, which contains the message body and some metadata.
+- The channel, which is used to acknowledge the message.
